@@ -1,0 +1,2 @@
+# Vendify
+An academic project
