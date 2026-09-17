@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Vendify — Verifica antes de comprar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --ink:#101a1b; --ink2:#334244; --soft:#607072; --line:#dce4e2;
+      --mint:#d8f5e5; --green:#0d6b4f; --lime:#a7f278;
+      --cream:#f9faf7; --white:#fff; --coral:#ff765d; --dark:#112527;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--cream);color:var(--ink);font-family:Manrope,Arial,sans-serif}
+    a{text-decoration:none;color:inherit}
+
+    .nav{
+      max-width:1180px;height:78px;margin:auto;padding:0 28px;
+      display:flex;align-items:center;justify-content:space-between
+    }
+    .brand{display:flex;align-items:center;gap:8px;font-size:23px;font-weight:800;letter-spacing:-1.2px}
+    .mark{
+      width:23px;height:23px;border-radius:7px;background:var(--lime);
+      display:grid;place-items:center;transform:rotate(-12deg)
+    }
+    .mark::after{content:"✓";font-size:16px;font-weight:800;transform:rotate(12deg)}
+    .nav-links{display:flex;gap:30px;color:var(--ink2);font-size:13px;font-weight:700}
+    .button,.nav-action{
+      display:inline-flex;justify-content:center;align-items:center;gap:8px;
+      border:0;border-radius:9px;padding:12px 18px;background:var(--ink);
+      color:#fff;font:700 13px Manrope;cursor:pointer
+    }
+    .nav-action{padding:11px 16px}
+    .button.primary{background:var(--green)}
+    .button.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+
+    .hero{max-width:1180px;margin:auto;padding:73px 28px 110px;overflow:hidden}
+    .hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:60px;align-items:center}
+    .eyebrow{
+      display:flex;align-items:center;gap:8px;color:var(--green);
+      font:500 11px "DM Mono",monospace;letter-spacing:.08em;text-transform:uppercase
+    }
+    .eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:#27bc79}
+    h1{
+      max-width:690px;margin:16px 0 23px;font-size:clamp(43px,5.4vw,74px);
+      line-height:1.02;letter-spacing:-.075em
+    }
+    h1 em{position:relative;color:var(--green);font-style:normal;z-index:1}
+    h1 em::after{
+      content:"";position:absolute;z-index:-1;left:0;right:0;bottom:3px;
+      height:12px;border-radius:8px;background:var(--lime);opacity:.75
+    }
+    .hero-copy{max-width:510px;color:var(--ink2);font-size:16px;line-height:1.7}
+    .hero-ctas{display:flex;gap:12px;margin-top:30px}
+    .trust{
+      margin-top:48px;padding-top:22px;border-top:1px solid var(--line);
+      color:var(--soft);font-size:11px;font-weight:700;letter-spacing:.04em
+    }
+    .logos{display:flex;gap:28px;margin-top:14px;color:#a1acab;font-size:14px;letter-spacing:-.4px}
+
+    .checkout{
+      position:relative;min-width:440px;overflow:hidden;background:#fff;
+      border-radius:19px;box-shadow:0 25px 60px rgba(17,37,39,.14);transform:rotate(2.5deg)
+    }
+    .shop-head{
+      display:flex;height:57px;padding:0 22px;align-items:center;justify-content:space-between;
+      border-bottom:1px solid #edf0ee;font-size:12px;font-weight:800
+    }
+    .shop-name{font-size:15px;letter-spacing:-.8px}
+    .cart{padding:7px 9px;border-radius:7px;background:#eef4f0;color:var(--green)}
+    .checkout-body{padding:20px 22px 24px}
+    .crumb{margin-bottom:18px;color:#98a3a2;font:700 10px Manrope}
+    .product{display:flex;gap:13px;padding-bottom:18px;border-bottom:1px solid #edf0ee}
+    .product-img{
+      position:relative;width:72px;height:63px;border-radius:10px;
+      background:linear-gradient(145deg,#e3d5c9,#c79676)
+    }
+    .product-img::after{
+      content:"";position:absolute;left:16px;top:9px;width:33px;height:43px;
+      border:6px solid #3d2923;border-radius:16px 16px 8px 8px
+    }
+    .product h3{margin:4px 0 5px;font-size:12px}
+    .product p{margin:0;color:#859291;font:10px "DM Mono",monospace}
+    .price{margin-left:auto;font-size:13px;font-weight:800}
+    .check-card{
+      display:flex;gap:11px;align-items:flex-start;margin:18px 0;padding:13px;
+      border:1px solid #cbeedb;border-radius:12px;background:#effaf3
+    }
+    .shield{
+      display:grid;place-items:center;flex:0 0 27px;width:27px;height:30px;
+      border-radius:9px;background:var(--green);color:#fff;font-size:15px
+    }
+    .check-card strong{display:block;margin:1px 0 3px;font-size:11px}
+    .check-card span{display:block;color:#527365;font-size:9px;line-height:1.35}
+    .check-brand{margin-top:5px;color:var(--green);font:500 8px "DM Mono",monospace;letter-spacing:.05em}
+    .pay-row{display:flex;justify-content:space-between;margin:18px 0 12px;font-size:11px;font-weight:700}
+    .pay-button{
+      width:100%;border:0;border-radius:8px;padding:13px;background:var(--ink);
+      color:#fff;font:700 11px Manrope
+    }
+    .float-alert{
+      position:absolute;right:-24px;bottom:32px;width:196px;padding:13px;
+      border:1px solid #ffd5c7;border-radius:12px;background:#fff6ef;
+      box-shadow:0 14px 30px rgba(81,48,26,.16);transform:rotate(-4deg)
+    }
+    .float-alert b{display:block;color:#9f351f;font-size:10px}
+    .float-alert p{margin:5px 0 0;color:#8b604e;font-size:9px;line-height:1.4}
+    .alert-dot{display:inline-block;width:7px;height:7px;margin-right:5px;border-radius:50%;background:var(--coral)}
+
+    .stats{padding:27px 28px;background:var(--dark);color:#fff}
+    .stats-inner{
+      display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:30px;
+      max-width:1124px;margin:auto;align-items:center
+    }
+    .stats p{margin:0;color:#a9c0bc;font-size:12px;line-height:1.5}
+    .stats strong{display:block;font-size:28px;letter-spacing:-1.5px}
+    .stats span{color:#a9c0bc;font-size:10px;font-weight:600}
+
+    .section{max-width:1180px;margin:auto;padding:116px 28px}
+    .section-kicker{color:var(--green);font:500 11px "DM Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
+    h2{max-width:650px;margin:15px 0;font-size:clamp(31px,4vw,51px);line-height:1.08;letter-spacing:-.065em}
+    .section-intro{max-width:560px;color:var(--soft);font-size:15px;line-height:1.65}
+    .flow{display:grid;grid-template-columns:repeat(3,1fr);gap:19px;margin-top:55px}
+    .step{position:relative;min-height:210px;padding:25px 23px 28px;border:1px solid var(--line);border-radius:14px;background:#fff}
+    .step-number{display:block;margin-bottom:35px;color:var(--green);font:500 10px "DM Mono",monospace}
+    .icon-round{display:grid;place-items:center;width:38px;height:38px;margin-bottom:17px;border-radius:11px;background:var(--mint);font-size:18px}
+    .step h3{margin:0 0 9px;font-size:16px;letter-spacing:-.5px}
+    .step p{margin:0;color:var(--soft);font-size:12px;line-height:1.6}
+    .connector::after{content:"→";position:absolute;right:-17px;top:92px;z-index:2;color:#9caaa8;font-size:16px}
+
+    .use-cases{background:#e7f5ec}
+    .use-grid{
+      display:grid;grid-template-columns:.8fr 1.2fr;gap:90px;
+      max-width:1180px;margin:auto;padding:100px 28px;align-items:center
+    }
+    .platforms{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px}
+    .platform{
+      display:flex;align-items:center;height:100px;padding:21px;border-radius:13px;
+      background:#fff;box-shadow:0 5px 18px rgba(30,73,51,.05);
+      font-size:15px;font-weight:800;letter-spacing:-.6px
+    }
+    .platform small{display:block;margin-top:5px;color:#72877e;font-size:10px;font-weight:600;letter-spacing:0}
+    .mini-icon{display:grid;place-items:center;width:33px;height:33px;margin-right:12px;border-radius:9px;background:#eef4f0;font-size:16px}
+    .verify{padding:25px;border:1px solid #dcebe2;border-radius:17px;background:#fff;box-shadow:0 20px 40px rgba(26,76,50,.08)}
+    .verify-top{display:flex;justify-content:space-between;align-items:center;padding-bottom:17px;border-bottom:1px solid #edf1ed;font-size:11px;font-weight:800}
+    .tag{padding:3px 7px;border-radius:5px;background:#e9f9ef;color:var(--green);font-size:9px;font-weight:800}
+    .risk{display:flex;gap:16px;align-items:center;padding:20px 0}
+    .risk-ring{
+      position:relative;display:grid;place-items:center;width:76px;height:76px;border-radius:50%;
+      background:conic-gradient(var(--green) 0 84%,#e6ede9 84% 100%)
+    }
+    .risk-ring::after{content:"";position:absolute;inset:8px;border-radius:50%;background:#fff}
+    .risk-ring span{z-index:1;color:var(--green);font:500 17px "DM Mono",monospace}
+    .risk h3{margin:0 0 5px;font-size:14px}
+    .risk p{margin:0;color:var(--soft);font-size:10px;line-height:1.5}
+    .details{display:grid;gap:10px;padding-top:14px;border-top:1px solid #edf1ed}
+    .detail{display:flex;justify-content:space-between;font-size:10px}
+    .detail span:first-child{color:var(--soft)}
+
+    .cta{
+      position:relative;overflow:hidden;max-width:1124px;margin:105px auto 0;
+      padding:68px 55px;border-radius:22px;background:var(--dark);color:#fff
+    }
+    .cta::after{
+      content:"";position:absolute;right:-100px;top:-170px;width:330px;height:330px;
+      border:55px solid rgba(167,242,120,.12);border-radius:50%
+    }
+    .cta h2{max-width:600px;margin:0 0 18px;font-size:clamp(31px,4vw,52px)}
+    .cta p{max-width:485px;margin-bottom:28px;color:#b9d0cb;font-size:14px;line-height:1.65}
+    .cta .button{position:relative;z-index:1;background:var(--lime);color:#163128}
+    .foot{
+      display:flex;justify-content:space-between;max-width:1180px;margin:auto;
+      padding:31px 28px;color:#81908e;font-size:11px
+    }
+    .foot .brand{color:var(--ink);font-size:17px}
+
+    @media (max-width:800px){
+      .nav-links{display:none}
+      .hero{padding-top:38px}
+      .hero-grid,.use-grid{grid-template-columns:1fr;gap:40px}
+      .checkout{min-width:0;max-width:510px;margin:auto}
+      .flow{grid-template-columns:1fr}
+      .connector::after{content:"↓";right:auto;left:50%;top:auto;bottom:-22px}
+      .stats-inner{grid-template-columns:1fr 1fr}
+      .cta{margin:65px 20px 0;padding:48px 30px}
+      .float-alert{right:-9px}
+    }
+    @media (max-width:450px){
+      .nav,.hero,.section,.use-grid,.foot{padding-left:20px;padding-right:20px}
+      .hero-ctas{flex-direction:column;align-items:stretch}
+      .stats-inner{grid-template-columns:1fr;gap:17px}
+      .platforms{grid-template-columns:1fr}
+      .checkout{transform:none}
+      .float-alert{display:none}
+      .cta{margin-left:14px;margin-right:14px}
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="#inicio" class="brand"><span class="mark"></span>vendify</a>
+    <div class="nav-links">
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#plataformas">Plataformas</a>
+      <a href="#proteccion">Protección</a>
+    </div>
+    <a class="nav-action" href="#activar">Activar Vendify Check</a>
+  </nav>
+
+  <main id="inicio">
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">Protección para cada transacción</div>
+          <h1>Verifica antes de comprar. <em>Confía</em> antes de entregar.</h1>
+          <p class="hero-copy">
+            Vendify Check añade una verificación inteligente dentro del checkout.
+            Detecta señales de fraude en perfiles de compra y venta antes de que
+            el dinero o el producto cambien de manos.
+          </p>
+          <div class="hero-ctas">
+            <a href="#activar" class="button primary">Activar Vendify Check →</a>
+            <a href="#como-funciona" class="button ghost">Ver cómo funciona</a>
+          </div>
+          <div class="trust">
+            COMPATIBLE CON TU FORMA DE COMPRAR
+            <div class="logos">
+              <span>amazon</span><span>Marketplace</span><span>encuentra24</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="checkout">
+          <div class="shop-head">
+            <span class="shop-name">UrbanMarket</span>
+            <span class="cart">🛒 1</span>
+          </div>
+          <div class="checkout-body">
+            <div class="crumb">CARRITO / FINALIZAR COMPRA</div>
+            <div class="product">
+              <div class="product-img"></div>
+              <div>
+                <h3>Bolso Luna · cuero negro</h3>
+                <p>Vendido por: Atelier 87</p>
+              </div>
+              <div class="price">$68.00</div>
+            </div>
+
+            <div class="check-card">
+              <div class="shield">✓</div>
+              <div>
+                <strong>Verificado por Vendify Check</strong>
+                <span>El perfil del vendedor coincide con nuestro historial de confianza.</span>
+                <div class="check-brand">VENDIFY • PROTECCIÓN ACTIVA</div>
+              </div>
+            </div>
+
+            <div class="pay-row"><span>Total</span><span>$68.00</span></div>
+            <button class="pay-button">Pagar ahora</button>
+          </div>
+
+          <div class="float-alert">
+            <b><span class="alert-dot"></span>Alerta de verificación</b>
+            <p>Revisa el historial del perfil antes de continuar.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats">
+      <div class="stats-inner">
+        <p>Una capa adicional de confianza, justo donde la decisión importa.</p>
+        <div><strong>En segundos</strong><span>resultado de verificación</span></div>
+        <div><strong>Antes del pago</strong><span>alertas dentro del checkout</span></div>
+        <div><strong>Sin fricción</strong><span>sin sustituir tu plataforma</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="como-funciona">
+      <div class="section-kicker">Así trabaja Vendify Check</div>
+      <h2>El checkout sigue siendo tuyo. La confianza, más clara.</h2>
+      <p class="section-intro">
+        No somos otro método de pago. Vendify aparece como un paso breve de
+        verificación entre el carrito y la confirmación final.
+      </p>
+
+      <div class="flow">
+        <article class="step connector">
+          <span class="step-number">01 / EL PERFIL</span>
+          <div class="icon-round">◉</div>
+          <h3>Detectamos quién participa</h3>
+          <p>Tomamos las señales disponibles del perfil de comprador o vendedor que ya usas en tu plataforma.</p>
+        </article>
+
+        <article class="step connector">
+          <span class="step-number">02 / LA REVISIÓN</span>
+          <div class="icon-round">⌁</div>
+          <h3>Cruzamos reportes previos</h3>
+          <p>Contrastamos inconsistencias y reportes de fraude para encontrar patrones que merecen atención.</p>
+        </article>
+
+        <article class="step">
+          <span class="step-number">03 / TU DECISIÓN</span>
+          <div class="icon-round">✓</div>
+          <h3>Mostramos una alerta clara</h3>
+          <p>Antes de pagar o entregar, recibes una señal simple para continuar con más contexto.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="use-cases" id="plataformas">
+      <div class="use-grid">
+        <div>
+          <div class="section-kicker">Donde compras y vendes</div>
+          <h2>Hecho para integrarse, no para interrumpir.</h2>
+          <p class="section-intro">
+            Vendify Check puede vivir en los marketplaces y sitios de clasificados
+            que tus usuarios ya conocen.
+          </p>
+
+          <div class="platforms">
+            <div class="platform"><span class="mini-icon">a</span><div>Amazon<small>checkout de compra</small></div></div>
+            <div class="platform"><span class="mini-icon">f</span><div>Marketplace<small>ventas entre personas</small></div></div>
+            <div class="platform"><span class="mini-icon">24</span><div>Encuentra24<small>clasificados locales</small></div></div>
+            <div class="platform"><span class="mini-icon">+</span><div>Tu plataforma<small>integración disponible</small></div></div>
+          </div>
+        </div>
+
+        <div class="verify" id="proteccion">
+          <div class="verify-top">
+            <span>Vendify Check</span>
+            <span class="tag">PERFIL ANALIZADO</span>
+          </div>
+
+          <div class="risk">
+            <div class="risk-ring"><span>84</span></div>
+            <div>
+              <h3>Señales de confianza encontradas</h3>
+              <p>Perfil consistente con transacciones y datos verificados.</p>
+            </div>
+          </div>
+
+          <div class="details">
+            <div class="detail"><span>Antigüedad del perfil</span><b>2 años, 4 meses</b></div>
+            <div class="detail"><span>Reportes de fraude</span><b class="tag">Sin coincidencias</b></div>
+            <div class="detail"><span>Datos del anuncio</span><b class="tag">Consistentes</b></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" id="activar">
+      <div class="eyebrow" style="color:#a7f278">Seguridad que se entiende</div>
+      <h2>Haz de cada checkout un lugar más seguro.</h2>
+      <p>Activa Vendify Check y da a tu comunidad una señal de confianza antes de confirmar la transacción.</p>
+      <a class="button" href="mailto:hola@vendify.example">Solicitar integración →</a>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <a href="#inicio" class="brand"><span class="mark"></span>vendify</a>
+    <span>© 2026 Vendify. Protección para comprar y vender mejor.</span>
+  </footer>
+</body>
+</html>
